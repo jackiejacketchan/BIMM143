@@ -1,0 +1,181 @@
+---
+title: "Class05:Data Visualization"
+author: "Jacklyn (PID: A16410001)"
+format: pdf
+---
+
+# Graphics Systems in R 
+
+There are many graphics systems in R for making plots and figures. 
+
+We have already played a little with **"base R"** graphics and the 'plot()' function. 
+
+Today we will start learning about a popular graphics package called 'ggplot2()'.
+
+This is an add on package - i.e. we need to install it. I install it (like I install any package) with the 'install.packages()' function. 
+
+
+```{r}
+plot(cars)
+```
+
+Before I can use the functions from a package I have to load up the package from my "library". We use the 'library(ggplot2)' command to load it up 
+
+```{r}
+library(ggplot2)
+ggplot(cars)
+```
+
+Every ggplot is made up of at least 3 things: 
+- data (the number etc. that will fo into your plot)
+- aes (how the columns of data map to the plot aesthetics)
+- geoms (how the plot actually looks, points, bars, lines, etc. )
+
+```{r}
+ggplot(cars) + 
+  aes(x=speed, y=dist) + 
+  geom_point()
+```
+
+For simple plots ggplot is more verbose - it takes more code - than base R plot.
+
+
+Add some more layers to you ggplot:
+
+```{r}
+ggplot(cars) + 
+  aes(x=speed, y=dist) + 
+  geom_point() +
+  geom_line() +
+  geom_smooth(method="lm" , color="pink") +
+  labs(title="Stopping Distance of Old Cars", subtitle = "A Silly Example Plot") 
+  
+```
+
+
+# Gene Expression Changes Upon Drug Treatment  
+
+
+```{r}
+url <- "https://bioboot.github.io/bimm143_S20/class-material/up_down_expression.txt"
+genes <- read.delim(url)
+head(genes)
+```
+
+
+```{r}
+ggplot(genes)+
+  aes(x=Condition1, y=Condition2, col=State)+
+  geom_point()
+  
+```
+
+
+```{r}
+p <- ggplot(genes)+
+  aes(x=Condition1, y=Condition2, col=State)+
+  geom_point()
+```
+
+
+```{r}
+p + scale_color_manual (values=c("blue", "gray", "red"))
+```
+
+
+```{r}
+p + scale_color_manual (values=c("blue", "gray", "red"))+
+  labs(title="Gene Expresion Changes Upon Drug Treatment",
+       x="Control (No Drug)", 
+       y="Drug Treatment")
+```
+
+
+# Gapminder 
+
+
+gapminder_2007
+
+
+```{r}
+library (gapminder)
+library(dplyr)
+
+gapminder_2007 <- gapminder %>% filter(year==2007)
+```
+
+
+plotting 
+
+
+```{r}
+ggplot(gapminder_2007)+
+  aes(x=gdpPercap, y=lifeExp)+
+  geom_point()
+```
+
+
+add "alpha=" to 'geom_point()' to make points more transparent 
+
+
+```{r}
+ggplot(gapminder_2007)+
+  aes(x=gdpPercap, y=lifeExp)+
+  geom_point(alpha=0.5)
+```
+
+
+Adding Colors with 'aes()' function 
+
+
+```{r}
+ggplot(gapminder_2007)+
+  aes(x=gdpPercap, y=lifeExp, color=continent, size=pop)+
+  geom_point(alpha=0.5)
+```
+
+
+Scaling Information 
+
+
+```{r}
+ggplot(gapminder_2007)+
+  aes(x=gdpPercap, y=lifeExp, color=continent, size=pop)+
+  geom_point(alpha=0.5)+
+  scale_size_area(max_size=10)
+```
+
+
+gapminder_1957
+
+
+```{r}
+gapminder_1957 <- gapminder %>% filter(year==1957)
+```
+
+
+plotting 
+
+
+```{r}
+ggplot(gapminder_1957)+
+  aes(x=gdpPercap, y=lifeExp, color=continent, size=pop)+
+  geom_point(alpha=0.7)+
+  scale_size_area(max_size=15)
+```
+
+
+Plotting both 2007 and 1957 
+
+
+```{r}
+gapminder_1957 <- gapminder %>% filter(year==1957 | year==2007)
+
+ggplot(gapminder_1957)+
+  aes(x=gdpPercap, y=lifeExp, color=continent, size=pop)+
+  geom_point(alpha=0.7)+
+  scale_size_area(max_size=10)+
+  facet_wrap(~year)
+
+```
+
