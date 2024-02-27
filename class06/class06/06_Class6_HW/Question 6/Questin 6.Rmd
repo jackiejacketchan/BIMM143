@@ -1,0 +1,45 @@
+---
+title: "Question 6"
+author: "Jacklyn Jung"
+date: "2024-01-29"
+output:
+  pdf: default
+  pdf_document: default
+---
+
+Q6. How would you generalize the original code above to work with any set of input
+protein structures?
+
+```{r}
+library(bio3d)
+```
+
+
+```{r}
+   #my function
+ analyze_protein_interactions <- function(pdb_files) {
+  #ensures "bio3d" package is loaded 
+   require(bio3d)
+  #apply specified function - function(file) - to each element of the input 
+ #list - pdb_files, want to read each PDB file separately and apply the function to each specific file 
+ lapply(pdb_files, function(file) {
+  #first returns class of protein structure data in PDB format (three dimentional structures)
+    pdb <- read.pdb(file)
+  #trim protein data to only include chain A and alpha carbon atoms
+    pdb_trimmed <- trim.pdb(pdb, chain="A", elety="CA")
+  #extract b-factor values
+    b_factors <- pdb_trimmed$atom$b
+  #output of function, list of plots 
+    plotb3(b_factors, sse=pdb_trimmed, typ="l", ylab="Bfactor", main=paste("Protein:", file))
+  })
+}
+  
+```
+
+```{r}
+# Example usage
+ pdb_files <- c("4AKE", "1AKE", "1E4Y")
+analyze_protein_interactions(pdb_files)
+
+```
+

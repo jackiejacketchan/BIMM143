@@ -1,0 +1,81 @@
+---
+title: "06_Class6_HW"
+author: Jacklyn Jung 
+date: 01.28.2024
+format: pdf
+editor: visual
+---
+
+## R Functions 
+
+```{r}
+# (A. Can you improve this analysis code?
+df <- data.frame(a=1:10, b=seq(200,400,length=10),c=11:20,d=NA)
+df$a <- (df$a - min(df$a)) / (max(df$a) - min(df$a))
+df$b <- (df$b - min(df$a)) / (max(df$b) - min(df$b)) 
+df$c <- (df$c - min(df$c)) / (max(df$c) - min(df$c))
+df$d <- (df$d - min(df$d)) / (max(df$a) - min(df$d))
+df$a
+df$b
+df$c
+df$d
+```
+
+```{r}
+df <- data.frame(a=1:10, b=seq(200,400,length=10),c=11:20,d=NA)
+normalize_column <- function(column) {
+  return((column - min(column, na.rm = TRUE)) / (max(column, na.rm=TRUE) - min(column, na.rm=TRUE)))
+}
+```
+
+
+```{r}
+normalize_column(df$a)
+normalize_column(df$b)
+normalize_column(df$c)
+normalize_column(df$d)
+```
+```{r}
+library(bio3d)
+s1 <- read.pdb("4AKE") # kinase with drug
+s2 <- read.pdb("1AKE") # kinase no drug
+s3 <- read.pdb("1E4Y") # kinase with drug
+```
+
+
+```{r}
+# Can you improve this analysis code?
+library(bio3d)
+s1 <- read.pdb("4AKE") # kinase with drug
+s2 <- read.pdb("1AKE") # kinase no drug
+s3 <- read.pdb("1E4Y") # kinase with drug
+s1.chainA <- trim.pdb(s1, chain="A", elety="CA")
+s2.chainA <- trim.pdb(s2, chain="A", elety="CA")
+s3.chainA <- trim.pdb(s1, chain="A", elety="CA")
+s1.b <- s1.chainA$atom$b
+s2.b <- s2.chainA$atom$b
+s3.b <- s3.chainA$atom$b
+plotb3(s1.b, sse=s1.chainA, typ="l", ylab="Bfactor")
+plotb3(s2.b, sse=s2.chainA, typ="l", ylab="Bfactor")
+plotb3(s3.b, sse=s3.chainA, typ="l", ylab="Bfactor")
+```
+```
+
+Q1. What type of object is returned from the read.pdb() function?
+
+- The read.pdb() function returns class of protein structure data in PDB format (three-dimensional structures)
+
+Q2. What does the trim.pdb() function do?
+
+- The trim.pdb() function helps to specify protein data structure that is returned. 
+
+Q3. What input parameter would turn off the marginal black and grey rectangles in the plots and what do they represent in this case?
+
+- We would turn off the margin input parameter to remove the marginal black and grey rectangles in the plot. We can add the mar=FALSE argument to the function. 
+
+Q4. What would be a better plot to compare across the different proteins? 
+
+- ggplot2 might be a better plot to compare across different proteins with more aesthetically pleasing features. 
+
+Q5. Which proteins are more similar to each other in their B-factor trends. How could you quantify this? 
+
