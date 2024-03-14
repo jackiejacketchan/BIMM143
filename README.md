@@ -9,4 +9,4 @@ Class Work from WINTER 2024 for BIMM 143 at UC San Diego
 
 
 
-- Class 7: [Introduction to machine learning for Bioinformatics](https://github.com/jackiejacketchan/BIMM143/blob/main/class07/Class%2007/class07.html)
+- Class 7: [Introduction to machine learning for Bioinformatics](https://github.com/jackiejacketchan/BIMM143/blob/main/class07/Class%2007/class07.pdf)
